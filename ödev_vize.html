@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var vize1=Number(prompt("1. vize notu:"));
+        var vize2=Number(prompt("2. vize notu:"));
+        var final=Number(prompt("Final notu:"));
+        
+        var ortalama=((vize1+vize2) / 2) * 0.4 + final * 0.6;
+
+        if(ortalama<50) {
+            alert("Kaldı (Ortalama: " + ortalama + ")"); }
+
+        else {
+            alert("Geçti (Ortalama: " + ortalama + ")"); } 
+    </script>
+</body>
+</html>
