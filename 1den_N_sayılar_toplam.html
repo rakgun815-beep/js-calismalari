@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //değişkenler
+        var s,n,toplam=0;
+
+        //n değerini oku
+        n=Number(prompt("n:"));
+
+        //döngü
+        for(s=1; s<=n; s++)
+            toplam=toplam+s;
+
+        //yaz
+        document.write("for toplam:"+toplam+"<br>");
+
+        //while döngüsü
+        s=1, toplam=0;
+        while(s<=n) {
+            toplam=toplam+s;
+            s++; }
+            document.write("while toplam="+toplam);
+    </script>
+</body>
+</html>
