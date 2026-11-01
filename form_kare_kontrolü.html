@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+            <form>
+            Sayı:<input type="text" id="sayi"><br>
+            Karesi:<span id="karesi"></span><br>
+            <input type="button" value="Hesapla" onclick="hesapla()">
+        </form>
+        <script>
+            function hesapla(){
+                //formdan sayıyı okudum
+                var sayi=document.getElementById("sayi").value;
+
+                //metin kutusu boş ise uyar
+                if(sayi==""){
+                    alert("Lütfen sayı giriniz!!!!");
+                }
+                //metin kutusu boş değilse aşağıdaki işlemleri yap
+                else{
+                    //okunan değeri Number veritipine çevir
+                    sayi=Number(sayi);
+
+                    //değer <=0 ise uyar
+                    if(sayi<=0){
+                        alert("Pozitif sayı giriniz!!!");
+                    }
+
+                    //değer >0 ise kare işlemini yap ve sonucu yaz
+                    else{
+                        var kare=sayi*sayi;
+                        document.getElementById("karesi").innerHTML=kare;
+                    }
+
+                }
+
+            }
+
+        </script>
+</body>
+</html>
