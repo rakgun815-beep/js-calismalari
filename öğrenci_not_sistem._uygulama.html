@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Öğrenci Not Sistemi</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px 16px;
+      font-family: Arial, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .kapsayici {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4f46e5;
+    }
+
+    .kart {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #4f46e5;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #4338ca;
+    }
+
+    .bilgi {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    #sonuc {
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #eef2ff;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .tablo-kutusu {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px 4px;
+      font-size: 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      color: #64748b;
+    }
+
+    .istatistik td {
+      width: 25%;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    .istatistik b {
+      display: block;
+      font-size: 22px;
+      color: #4f46e5;
+    }
+
+    .gecti {
+      color: #15803d;
+      background-color: #dcfce7;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .kaldi {
+      color: #dc2626;
+      background-color: #fee2e2;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .alt-bilgi {
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="kapsayici">
+    <h1>Öğrenci Not Sistemi</h1>
+
+    <div class="kart">
+      <h2>Not Hesapla</h2>
+
+      <label for="ad">Öğrenci Adı Soyadı</label>
+      <input type="text" id="ad" placeholder="Örn: Ali Yılmaz">
+
+      <label for="vize">Vize Notu</label>
+      <input type="number" id="vize" placeholder="0 - 100">
+
+      <label for="final">Final Notu</label>
+      <input type="number" id="final" placeholder="0 - 100">
+
+      <button type="button" onclick="hesapla()">Hesapla ve Listeye Ekle</button>
+
+      <p class="bilgi">Ortalama = Vize × %40 + Final × %60. Ortalaması 60 ve üzeri olan öğrenci geçer.</p>
+
+      <div id="sonuc">Henüz hesaplama yapılmadı.</div>
+    </div>
+
+    <div class="kart">
+      <h2>Sınıf Listesi</h2>
+
+      <table class="istatistik">
+        <tr>
+          <td><b id="ogrenciSayisi">0</b>Öğrenci</td>
+          <td><b id="sinifOrtalamasi">-</b>Sınıf Ortalaması</td>
+          <td><b id="gecenSayisi">0</b>Geçen</td>
+          <td><b id="kalanSayisi">0</b>Kalan</td>
+        </tr>
+      </table>
+
+      <br>
+
+      <div class="tablo-kutusu">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ad Soyad</th>
+              <th>Vize</th>
+              <th>Final</th>
+              <th>Ort.</th>
+              <th>Harf</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody id="tablo">
+            <tr>
+              <td colspan="7">Henüz öğrenci eklenmedi.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="alt-bilgi">BTK Akademi – JavaScript Temelleri eğitimi kapsamında hazırlanmıştır.</p>
+  </div>
+
+  <script>
+    const VIZE_YUZDESI = 40;
+    const FINAL_YUZDESI = 60;
+    const GECME_NOTU = 60;
+
+    let ogrenciler = [];
+
+    function yuvarla(sayi) {
+      return parseInt(sayi + 0.5);
+    }
+
+    function harfNotuBul(ortalama) {
+      if (ortalama >= 88) {
+        return "AA";
+      } else if (ortalama >= 81) {
+        return "BA";
+      } else if (ortalama >= 74) {
+        return "BB";
+      } else if (ortalama >= 67) {
+        return "CB";
+      } else if (ortalama >= 60) {
+        return "CC";
+      } else if (ortalama >= 53) {
+        return "DC";
+      } else if (ortalama >= 46) {
+        return "DD";
+      } else {
+        return "FD";
+      }
+    }
+
+    function renkSinifi(durum) {
+      if (durum == "Geçti") {
+        return "gecti";
+      } else {
+        return "kaldi";
+      }
+    }
+
+    function hesapla() {
+      let ad = document.getElementById("ad").value;
+      let vizeNotu = parseFloat(document.getElementById("vize").value);
+      let finalNotu = parseFloat(document.getElementById("final").value);
+
+      if (ad == "") {
+        alert("Lütfen öğrencinin adını yazın.");
+        return;
+      }
+
+      if (isNaN(vizeNotu) || isNaN(finalNotu)) {
+        alert("Lütfen vize ve final notunu yazın.");
+        return;
+      }
+
+      if (vizeNotu < 0 || vizeNotu > 100 || finalNotu < 0 || finalNotu > 100) {
+        alert("Notlar 0 ile 100 arasında olmalı.");
+        return;
+      }
+
+      let ortalama = yuvarla((vizeNotu * VIZE_YUZDESI + finalNotu * FINAL_YUZDESI) / 100);
+      let harf = harfNotuBul(ortalama);
+
+      let durum = "Kaldı";
+      if (ortalama >= GECME_NOTU) {
+        durum = "Geçti";
+      }
+
+      let ogrenci = {
+        ad: ad,
+        vize: vizeNotu,
+        final: finalNotu,
+        ortalama: ortalama,
+        harf: harf,
+        durum: durum
+      };
+
+      ogrenciler.push(ogrenci);
+
+      sonucuGoster(ogrenci);
+      listeyiGoster();
+
+      document.getElementById("ad").value = "";
+      document.getElementById("vize").value = "";
+      document.getElementById("final").value = "";
+    }
+
+    function sonucuGoster(ogrenci) {
+      document.getElementById("sonuc").innerHTML =
+        "<b>" + ogrenci.ad + "</b><br>" +
+        "Ortalama: <b>" + ogrenci.ortalama + "</b> &nbsp; " +
+        "Harf Notu: <b>" + ogrenci.harf + "</b> &nbsp; " +
+        "<span class='" + renkSinifi(ogrenci.durum) + "'>" + ogrenci.durum + "</span>";
+    }
+
+    function listeyiGoster() {
+      let satirlar = "";
+      let toplam = 0;
+      let gecen = 0;
+
+      for (let i = 0; i < ogrenciler.length; i++) {
+        let ogrenci = ogrenciler[i];
+
+        satirlar = satirlar +
+          "<tr>" +
+          "<td>" + (i + 1) + "</td>" +
+          "<td>" + ogrenci.ad + "</td>" +
+          "<td>" + ogrenci.vize + "</td>" +
+          "<td>" + ogrenci.final + "</td>" +
+          "<td>" + ogrenci.ortalama + "</td>" +
+          "<td>" + ogrenci.harf + "</td>" +
+          "<td><span class='" + renkSinifi(ogrenci.durum) + "'>" + ogrenci.durum + "</span></td>" +
+          "</tr>";
+
+        toplam = toplam + ogrenci.ortalama;
+
+        if (ogrenci.durum == "Geçti") {
+          gecen = gecen + 1;
+        }
+      }
+
+      document.getElementById("tablo").innerHTML = satirlar;
+      document.getElementById("ogrenciSayisi").innerHTML = ogrenciler.length;
+      document.getElementById("sinifOrtalamasi").innerHTML = yuvarla(toplam / ogrenciler.length);
+      document.getElementById("gecenSayisi").innerHTML = gecen;
+      document.getElementById("kalanSayisi").innerHTML = ogrenciler.length - gecen;
+    }
+  </script>
+</body>
+</html>
