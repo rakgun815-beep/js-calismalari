@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+            //dizi oluştur
+            var sayilar=new Array();
+
+            //dizi eleman sayısı
+            var n=Number(prompt("dizi eleman sayısı:"));
+
+            //dizi elemanlarını ekrandan al
+            for(var i=0; i<n; i++)
+                sayilar[i]=Number(prompt(i+" indisli eleman"));
+
+            //dizi elemanlarının toplamı
+            var toplam=0, ortalama=0;
+            for(var i=0; i<n; i++){
+                toplam=toplam+sayilar[i];
+                }
+
+            //ortalama hesabı
+            ortalama=toplam/n;
+
+            //ortalamayı yaz
+            document.write("ortalama="+ortalama);
+    </script>
+</body>
+</html>
