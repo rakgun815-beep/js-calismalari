@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        Sayi:<input type="text" id="sayi"><br>
+        Karesi: <span id="sonuc"></span><br>
+        <input type="button" value="Hesapla" onclick="karesi()">
+    </form>
+    <script>
+        function karesi(){
+            var sayi=Number(document.getElementById("sayi").value);
+            var kare=sayi*sayi;
+            document.getElementById("sonuc").innerHTML=kare; }
+    </script>
+</body>
+</html>
